@@ -5,12 +5,12 @@
 }
 
 body {
-font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+    font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
     background: #0d1117;
     color: #c9d1d9;
     padding: 20px;
     line-height: 1.6;
-min-height: 100vh;
+    min-height: 100vh;
     box-sizing: border-box;
 }
 
@@ -19,7 +19,7 @@ min-height: 100vh;
     margin: 0 auto;
     display: flex;
     gap: 20px;
-min-height: calc(100vh - 40px);
+    min-height: calc(100vh - 40px);
 }
 
 .container {
@@ -29,7 +29,7 @@ min-height: calc(100vh - 40px);
     border-radius: 8px;
     padding: 30px;
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
-display: flex;
+    display: flex;
     flex-direction: column;
 }
 
@@ -117,14 +117,14 @@ display: flex;
     font-family: "Consolas", "Monaco", monospace;
     font-size: 13px;
     line-height: 1.5;
+    padding: 0 !important;
     background: transparent !important;
-        padding: 0 !important;
-    }
-    
-    .preview-content pre code {
-        display: block;
-        padding: 0 !important;
-        background: transparent !important;
+}
+
+.preview-content pre code {
+    display: block;
+    padding: 0 !important;
+    background: transparent !important;
 }
 
 .preview-content img {
@@ -216,9 +216,9 @@ h1 {
 }
 
 .file-tree {
-font-family: "Consolas", "Monaco", monospace;
+    font-family: "Consolas", "Monaco", monospace;
     font-size: 14px;
-flex: 1;
+    flex: 1;
     min-height: 200px;
 }
 
