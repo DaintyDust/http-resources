@@ -228,12 +228,25 @@ async function openPreview(filepath, filename) {
         } else {
             const text = await response.text();
             previewContent.innerHTML = "";
+
+            const language = detectLanguage(filepath);
             const pre = document.createElement("pre");
-            pre.textContent = text;
+            const code = document.createElement("code");
+
+            if (language) {
+                code.className = `language-${language}`;
+            }
+
+            code.textContent = text;
+            pre.appendChild(code);
             previewContent.appendChild(pre);
 
+            if (typeof hljs !== 'undefined') {
+                hljs.highlightElement(code);
+            }
+
             showFileDetails({
-                type: "Text File",
+                type: language ? `${language.toUpperCase()} File` : "Text File",
                 size: contentLength || text.length,
                 lines: text.split("\n").length,
                 lastModified: lastModified,
@@ -278,6 +291,46 @@ function showFileDetails(details) {
     html += "</div>";
     fileDetails.innerHTML = html;
     fileDetails.style.display = "block";
+}
+
+function detectLanguage(filepath) {
+    const ext = filepath.split('.').pop().toLowerCase();
+    const languageMap = {
+        'js': 'javascript',
+        'jsx': 'javascript',
+        'ts': 'typescript',
+        'tsx': 'typescript',
+        'css': 'css',
+        'scss': 'scss',
+        'sass': 'sass',
+        'html': 'html',
+        'xml': 'xml',
+        'json': 'json',
+        'py': 'python',
+        'java': 'java',
+        'c': 'c',
+        'cpp': 'cpp',
+        'cs': 'csharp',
+        'php': 'php',
+        'rb': 'ruby',
+        'go': 'go',
+        'rs': 'rust',
+        'kt': 'kotlin',
+        'swift': 'swift',
+        'md': 'markdown',
+        'yml': 'yaml',
+        'yaml': 'yaml',
+        'sh': 'bash',
+        'bash': 'bash',
+        'sql': 'sql',
+        'r': 'r',
+        'lua': 'lua',
+        'perl': 'perl',
+        'dart': 'dart',
+        'vue': 'vue',
+        'svelte': 'svelte'
+    };
+    return languageMap[ext] || null;
 }
 
 document.getElementById("closePreviewBtn").addEventListener("click", () => {
