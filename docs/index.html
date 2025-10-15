@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>HTTP Resources - File Browser</title>
+    <link rel="icon" type="image/x-icon" href="assets/favicon.png" />
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <div class="main-layout">
+      <div class="container">
+        <h1>🗂️ HTTP Resources</h1>
+        <div class="subtitle">File browser for raw.daintydust.dev</div>
+
+        <input type="text" class="search-box" id="searchBox" placeholder="Search files and folders..." />
+
+        <div class="file-tree" id="fileTree"></div>
+
+        <div class="stats" id="stats"></div>
+      </div>
+
+      <div class="preview-pane" id="previewPane">
+        <div class="preview-header">
+          <div>
+            <div class="preview-title" id="previewTitle"></div>
+            <div class="file-path" id="previewPath"></div>
+          </div>
+          <div class="preview-actions">
+            <a class="btn btn-primary" id="viewRawBtn" href="#" target="_blank">
+              <span>📄</span> View Raw
+            </a>
+            <button class="btn" id="closePreviewBtn">
+              <span>✕</span> Close
+            </button>
+          </div>
+        </div>
+        <div class="preview-content" id="previewContent">
+          <div class="preview-loading">Loading...</div>
+        </div>
+        <div class="file-details" id="fileDetails" style="display: none"></div>
+      </div>
+    </div>
+
+    <script src="script.js"></script>
+  </body>
+</html>
+  </body>
+</html>
