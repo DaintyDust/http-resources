@@ -193,7 +193,51 @@ async function openPreview(filepath, filename) {
         const contentLength = response.headers.get("content-length");
         const lastModified = response.headers.get("last-modified");
 
-        if (contentType.includes("image")) {
+        if (isFontFile(filepath)) {
+            const fontName = `font-${Date.now()}`;
+            const fontFormat = getFontFormat(filepath);
+
+            const fontFace = new FontFace(fontName, `url(${rawUrl})`, { format: fontFormat });
+
+            try {
+                await fontFace.load();
+                document.fonts.add(fontFace);
+
+                previewContent.innerHTML = "";
+                const fontPreview = document.createElement("div");
+                fontPreview.className = "font-preview";
+
+                const samples = [
+                    { text: "The quick brown fox jumps over the lazy dog", className: "large" },
+                    { text: "ABCDEFGHIJKLMNOPQRSTUVWXYZ", className: "medium" },
+                    { text: "abcdefghijklmnopqrstuvwxyz", className: "medium" },
+                    { text: "0123456789 !@#$%^&*(){}[]", className: "small" }
+                ];
+
+                samples.forEach(sample => {
+                    const sampleDiv = document.createElement("div");
+                    sampleDiv.className = `font-sample ${sample.className}`;
+                    sampleDiv.style.fontFamily = fontName;
+                    sampleDiv.textContent = sample.text;
+                    fontPreview.appendChild(sampleDiv);
+                });
+
+                previewContent.appendChild(fontPreview);
+
+                showFileDetails({
+                    type: "Font File",
+                    size: contentLength,
+                    format: fontFormat.toUpperCase(),
+                    lastModified: lastModified,
+                });
+            } catch (error) {
+                previewContent.innerHTML = `
+                    <div style="color: #f85149; padding: 20px;">
+                        ⚠️ Error loading font: ${error.message}
+                    </div>
+                `;
+            }
+        } else if (contentType.includes("image")) {
             const img = document.createElement("img");
             img.src = rawUrl;
             img.alt = filename;
@@ -279,6 +323,10 @@ function showFileDetails(details) {
         html += `<div class="detail-label">Dimensions:</div><div class="detail-value">${details.dimensions}</div>`;
     }
 
+    if (details.format) {
+        html += `<div class="detail-label">Format:</div><div class="detail-value">${details.format}</div>`;
+    }
+
     if (details.lines) {
         html += `<div class="detail-label">Lines:</div><div class="detail-value">${details.lines}</div>`;
     }
@@ -291,6 +339,22 @@ function showFileDetails(details) {
     html += "</div>";
     fileDetails.innerHTML = html;
     fileDetails.style.display = "block";
+}
+
+function isFontFile(filepath) {
+    const ext = filepath.split('.').pop().toLowerCase();
+    return ['ttf', 'otf', 'woff', 'woff2'].includes(ext);
+}
+
+function getFontFormat(filepath) {
+    const ext = filepath.split('.').pop().toLowerCase();
+    const formatMap = {
+        'ttf': 'truetype',
+        'otf': 'opentype',
+        'woff': 'woff',
+        'woff2': 'woff2'
+    };
+    return formatMap[ext] || 'truetype';
 }
 
 function detectLanguage(filepath) {
